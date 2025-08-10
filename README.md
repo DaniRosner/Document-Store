@@ -1,25 +1,42 @@
 # Document Store
 A comprehensive document storage and retrieval system that combines efficient in-memory data structures with persistent disk storage. This system provides powerful search capabilities, complete undo/redo functionality, and intelligent memory management - all built from scratch without relying on Java's built-in collections framework.
-## Features
+## Key Features
 - **Document Management**
   - Store and retrieve text and binary documents using unique URIs
   - Support for document metadata (key-value pairs)
   - Automatic word indexing and counting for text documents
   - JSON-based persistence for long-term storage
-- **B-Tree**: Used for storing and retrieving documents. When memory limits are reached, documents are offloaded to disk for efficient storage management.
-- **Min-Heap**: Tracks documents by their last access time, enabling intelligent selection of documents to send to disk under memory constraints.
-- **Trie Table**: Allows fast retrieval of documents based on specific words or phrases for efficient search capabilities.
-- **Undo Functionality**: Implemented using Stacks to support undo operations for document additions or deletions, utilizing lambda functions.
-- **JSON Serialization/Deserialization**: Documents are serialized to JSON when offloaded to disk, and deserialized when retrieved, ensuring seamless data persistence.
+- **Complete Undo System**
+  - Undo any operation (put, delete, metadata changes)
+  - Undo last action globally or on specific documents
+  - Support for multi-document undo operations
+  - Command pattern implementation with lambda functions
+- **Intelligent Memory Management**
+  - **Two-Tier Storage**: Automatic movement between RAM and disk
+  - **LRU Eviction**: Least Recently Used algorithm for memory optimization
+  - **Configurable Limits**: Set maximum document count and memory usage
+  - **Transparent Disk I/O**: Documents seamlessly move to/from disk as needed
 
-## Data Structures Used
-- **B-Tree**: Efficient document management and storage.
-- **Min-Heap**: Manages document memory usage by last access time.
-- **Trie**: Supports fast document lookup based on content.
-- **Stacks**: Facilitates undo functionality for document operations.
+## Architechture & Data Structures
+- **Custom-Built Components**
+  - **HashTable**: Separate chaining collision resolution with dynamic resizing
+  - **Trie**: Efficient prefix tree for O(k) search operations
+  - **MinHeap**: Priority queue for LRU document tracking
+  - **BTree**: Balanced tree for scalable document storage
+  - **Stack**: Generic implementation for command history
+- **Design Patterns**
+  - **Command Pattern**: Encapsulated operations for undo functionality
+  - **Persistence Manager**: Abstracted disk I/O operations
+  - **Generic Programming**: Type-safe, reusable data structures
 
-## Usage
-This project is designed to handle document storage with a memory limit, leveraging data structures to optimize retrieval, storage, and memory usage. Documents are automatically moved to disk when memory limits are exceeded, and users can undo document add/delete actions.
-
-### Serialization and Persistence
-All documents sent to disk are serialized to JSON format for storage. When retrieved from disk, documents are deserialized back into the system for continued use.
+## Technical Specifications
+- **Core Technologies**
+  - **Language**: Java 17
+  - **Build System**: Maven
+  - **Serialization**: GSON for JSON document persistence
+  - **Testing**: JUnit for comprehensive test coverage
+- **Performance Characteristics**
+  - **Search Complexity**: O(k) for keyword/prefix search (k = word length)
+  - **Storage**: Unlimited documents with configurable memory limits
+  - **Persistence**: Automatic serialization to disk when memory limits exceeded
+  - **Recovery**: Documents automatically loaded from disk when accessed
